@@ -1,0 +1,94 @@
+package ${packageName}.dao.mapper;
+
+import java.util.List;
+import ${packageName}.common.entity.${ClassName};
+#if($table.sub)
+import ${packageName}.common.entity.${subClassName};
+#end
+
+/**
+ * ${functionName} Mapper Interface
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Mapper 
+{
+    /**
+     * Select ${functionName}
+     * 
+     * @param ${pkColumn.javaField} ${functionName} primary key
+     * @return ${functionName}
+     */
+    public ${ClassName} select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * select ${functionName} list
+     * 
+     * @param ${className} ${functionName}
+     * @return ${functionName} list
+     */
+    public List<${ClassName}> select${ClassName}List(${ClassName} ${className});
+
+    /**
+     * add ${functionName}
+     * 
+     * @param ${className} ${functionName}
+     * @return ${ClassName}
+     */
+    public int insert${ClassName}(${ClassName} ${className});
+
+    /**
+     * Modify ${functionName}
+     * 
+     * @param ${className} ${functionName}
+     * @return record total
+     */
+    public int update${ClassName}(${ClassName} ${className});
+
+    /**
+     * remove ${functionName}
+     * 
+     * @param ${pkColumn.javaField} ${functionName} primary key
+     * @return int
+     */
+    public int delete${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * batch remove ${functionName}
+     * 
+     * @param ${pkColumn.javaField}s primary key list
+     * @return record total
+     */
+    public int delete${ClassName}By${pkColumn.capJavaField}s(String[] ${pkColumn.javaField}s);
+
+    int logicDeleteById(${pkColumn.javaType} ${pkColumn.javaField});
+
+#if($table.sub)
+
+    /**
+     * batch remove ${subTable.functionName}
+     * 
+     * @param ${pkColumn.javaField}s primary key list
+     * @return record total
+     */
+    public int delete${subClassName}By${subTableFkClassName}s(String[] ${pkColumn.javaField}s);
+    
+    /**
+     * batch add ${subTable.functionName}
+     * 
+     * @param ${subclassName}List ${subTable.functionName} list
+     * @return record total
+     */
+    public int batch${subClassName}(List<${subClassName}> ${subclassName}List);
+    
+
+    /**
+     * delete ${functionName} by primary key ${subTable.functionName}
+     * 
+     * @param ${pkColumn.javaField} ${functionName} id
+     * @return record total
+     */
+    public int delete${subClassName}By${subTableFkClassName}(${pkColumn.javaType} ${pkColumn.javaField});
+#end
+}

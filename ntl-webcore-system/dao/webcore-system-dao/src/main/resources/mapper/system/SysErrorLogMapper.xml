@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ntl.webcore.system.mapper.SysErrorLogMapper">
+
+    <resultMap type="SysErrorLog" id="SysErrorLogResult">
+        <result property="id"    column="id"    />
+        <result property="errorCode"    column="error_code"    />
+        <result property="errorType"    column="error_type"    />
+        <result property="errorMessage"    column="error_message"    />
+        <result property="status"    column="status"    />
+        <result property="requestIp"    column="request_ip"    />
+        <result property="serverIp"    column="server_ip"    />
+        <result property="serviceId"    column="service_id"    />
+        <result property="operator"    column="operator"    />
+        <result property="logTime"    column="log_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysErrorLogVo">
+        select id, error_code, error_type, error_message, status, request_ip, server_ip, service_id, operator, log_time, remark from sys_error_log
+    </sql>
+
+    <select id="selectSysErrorLogList" parameterType="SysErrorLog" resultMap="SysErrorLogResult">
+        <include refid="selectSysErrorLogVo"/>
+        <where>
+            <if test="errorCode != null  and errorCode != ''"> and error_code = #{errorCode}</if>
+            <if test="errorType != null  and errorType != ''"> and error_type = #{errorType}</if>
+            <if test="errorMessage != null  and errorMessage != ''"> and error_message = #{errorMessage}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="requestIp != null  and requestIp != ''"> and request_ip = #{requestIp}</if>
+            <if test="serverIp != null  and serverIp != ''"> and server_ip = #{serverIp}</if>
+            <if test="serviceId != null  and serviceId != ''"> and service_id = #{serviceId}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="logTime != null "> and log_time = #{logTime}</if>
+        </where>
+    </select>
+
+    <select id="selectSysErrorLogById" parameterType="String" resultMap="SysErrorLogResult">
+        <include refid="selectSysErrorLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysErrorLog" parameterType="SysErrorLog">
+        insert into sys_error_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="errorCode != null and errorCode != ''">error_code,</if>
+            <if test="errorType != null">error_type,</if>
+            <if test="errorMessage != null">error_message,</if>
+            <if test="status != null">status,</if>
+            <if test="requestIp != null">request_ip,</if>
+            <if test="serverIp != null">server_ip,</if>
+            <if test="serviceId != null">service_id,</if>
+            <if test="operator != null">operator,</if>
+            <if test="logTime != null">log_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="errorCode != null and errorCode != ''">#{errorCode},</if>
+            <if test="errorType != null">#{errorType},</if>
+            <if test="errorMessage != null">#{errorMessage},</if>
+            <if test="status != null">#{status},</if>
+            <if test="requestIp != null">#{requestIp},</if>
+            <if test="serverIp != null">#{serverIp},</if>
+            <if test="serviceId != null">#{serviceId},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="logTime != null">#{logTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysErrorLog" parameterType="SysErrorLog">
+        update sys_error_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="errorCode != null and errorCode != ''">error_code = #{errorCode},</if>
+            <if test="errorType != null">error_type = #{errorType},</if>
+            <if test="errorMessage != null">error_message = #{errorMessage},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="requestIp != null">request_ip = #{requestIp},</if>
+            <if test="serverIp != null">server_ip = #{serverIp},</if>
+            <if test="serviceId != null">service_id = #{serviceId},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="logTime != null">log_time = #{logTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysErrorLogById" parameterType="String">
+        delete from sys_error_log where id = #{id}
+    </delete>
+
+    <delete id="deleteSysErrorLogByIds" parameterType="String">
+        delete from sys_error_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="markAllReadByIds" parameterType="String">
+        update sys_error_log set status='1' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+
+</mapper>

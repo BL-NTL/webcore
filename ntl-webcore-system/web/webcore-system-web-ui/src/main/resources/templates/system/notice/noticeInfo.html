@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('消息内容页面')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="pull-right">
+                    <button class="btn btn-white btn-xs" type="button">发布者：[[${author.userName}]]</button>
+                </div>
+                <div class="text-center article-title">
+                    <h1>[[${notice.noticeTitle}]]</h1>
+                    <span class="text-muted">
+                    <i class="fa fa-clock-o"></i>[[${#dates.format(notice.createTime,'yyyy-MM-dd HH:mm:ss')}]]
+                </span>
+                </div>
+                <div th:utext="${notice.noticeContent}"></div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: footer" />
+
+    <script th:inline="javascript">
+
+    </script>
+</body>
+</html>

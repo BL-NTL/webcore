@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ntl-webcore-system</artifactId>
+        <groupId>com.ntl.webcore</groupId>
+        <version>4.8.0</version>
+        <relativePath>../../pom.xml</relativePath>
+        <!-- 这里使用相对路径指向父级 pom.xml,因为system-dao是没有直接在webcore-system的根目录下 -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>webcore-system-dao</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- pagehelper 分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ntl.webcore</groupId>
+            <artifactId>webcore-system-common-api</artifactId>
+            <version>4.8.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增错误日志')" />
+	<th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+	<form class="form-horizontal m" id="form-log-add">
+		<div class="form-group">
+			<label class="col-sm-3 control-label is-required">错误代码：</label>
+			<div class="col-sm-8">
+				<input name="errorCode" class="form-control" type="text" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">错误日志：</label>
+			<div class="col-sm-8">
+				<textarea name="errorMessage" class="form-control"></textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">异常服务器IP：</label>
+			<div class="col-sm-8">
+				<input name="serverIp" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">异常服务器服务ID：</label>
+			<div class="col-sm-8">
+				<input name="serviceId" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">操作人：</label>
+			<div class="col-sm-8">
+				<input name="operator" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">日志时间：</label>
+			<div class="col-sm-8">
+				<div class="input-group date">
+					<input name="logTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">备注：</label>
+			<div class="col-sm-8">
+				<textarea name="remark" class="form-control"></textarea>
+			</div>
+		</div>
+	</form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+        var prefix = ctx + "monitor/sysErrorLog"
+        $("#form-log-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-log-add').serialize());
+            }
+        }
+
+        $("input[name='logTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

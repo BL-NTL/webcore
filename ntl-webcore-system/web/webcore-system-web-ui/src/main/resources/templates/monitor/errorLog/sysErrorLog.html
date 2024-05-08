@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('错误日志列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>错误代码：</label>
+                            <input type="text" name="errorCode"/>
+                        </li>
+                        <li>
+                            <label>阅读状态：</label>
+                            <select name="status" th:with="type=${@dict.getType('sys_read_status')}">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" ></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>请求IP：</label>
+                            <input type="text" name="requestIp"/>
+                        </li>
+                        <li>
+                            <label>异常服务器IP：</label>
+                            <input type="text" name="serverIp"/>
+                        </li>
+                        <li>
+                            <label>异常服务器服务ID：</label>
+                            <input type="text" name="serviceId"/>
+                        </li>
+                        <li>
+                            <label>操作人：</label>
+                            <input type="text" name="operator"/>
+                        </li>
+                        <li>
+                            <label>日志时间：</label>
+                            <input type="text" class="time-input" placeholder="请选择日志时间" name="logTime"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:log:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary multiple disabled" onclick="markAllRead()" shiro:hasPermission="system:log:remove">
+                <i class="fa fa-edit"></i> 标记已读
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:log:remove">
+                <i class="fa fa-edit"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:log:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:log:edit')}]];
+        var viewFlag = [[${@permission.hasPermi('system:log:view')}]];
+        var removeFlag = [[${@permission.hasPermi('system:log:remove')}]];
+        var prefix = ctx + "monitor/sysErrorLog";
+        var statusDict = [[${@dict.getType('sys_read_status')}]];
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                detailUrl: prefix + "/detail/{id}",
+                sortName: "logTime",
+		        sortOrder: "desc",
+                modalName: "错误日志",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'errorCode',
+                    title: '错误代码',
+                    sortable: true
+                },
+                {
+                    field: 'errorType',
+                    title: '异常类型',
+                    sortable: true
+                },
+                {
+                    field: 'errorMessage',
+                    title: '错误日志',
+                    visible: false
+                },
+                {
+                    field: 'status',
+                    title: '阅读状态',
+                    sortable: true,
+                    formatter: function(value, row, index) {
+		            	return $.table.selectDictLabel(statusDict, value);
+		            }
+                },
+                {
+                    field: 'requestIp',
+                    title: '请求IP',
+                    sortable: true
+                },
+                {
+                    field: 'serviceId',
+                    title: '异常服务器服务ID',
+                    sortable: true
+                },
+                {
+                    field: 'operator',
+                    title: '操作人',
+                    sortable: true
+                },
+                {
+                    field: 'logTime',
+                    title: '日志时间',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                        actions.push('<a class="btn btn-warning btn-xs ' + viewFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详细</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function markAllRead(){
+            table.set();
+            var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            $.modal.confirm("确认标记选中的" + rows.length + "条数据为已读?", function() {
+                var url = prefix + "/markread";
+                var data = { "ids": rows.join() };
+                $.operate.submit(url, "post", "json", data);
+            });
+        }
+    </script>
+</body>
+</html>
