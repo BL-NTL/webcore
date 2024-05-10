@@ -50,12 +50,19 @@ $(function() {
     if ($(".select-time").length > 0) {
        layui.use('laydate', function() {
             var laydate = layui.laydate;
+            var langAttr = $('#startTime').attr("lang");
+            if (langAttr) {
+                var underscoreIndex = langAttr.indexOf('_');
+                langAttr = underscoreIndex !== -1 ? langAttr.substring(0, underscoreIndex) : langAttr;
+            }else{
+                langAttr = 'cn';
+            }
             startLayDate = laydate.render({
                 elem: '#startTime',
                 max: $('#endTime').val(),
                 theme: 'molv',
                 type: $('#startTime').attr("data-type") || 'date',
-                lang: $('#startTime').attr("lang") || 'cn',
+                lang: langAttr,
                 trigger: 'click',
                 done: function(value, date) {
                     // 结束时间大于开始时间
@@ -75,7 +82,7 @@ $(function() {
                 min: $('#startTime').val(),
                 theme: 'molv',
                 type: $('#endTime').attr("data-type") || 'date',
-                lang: $('#startTime').attr("lang") || 'cn',
+                lang: langAttr,
                 trigger: 'click',
                 done: function(value, date) {
                     // 开始时间小于结束时间
@@ -105,6 +112,13 @@ $(function() {
                 var format = time.attr("data-format") || 'yyyy-MM-dd';
                 // 控制日期控件按钮
                 var buttons = time.attr("data-btn") || 'clear|now|confirm', newBtnArr = [];
+                var langAttr = time.attr("lang");
+                if (langAttr) {
+                    var underscoreIndex = langAttr.indexOf('_');
+                    langAttr = underscoreIndex !== -1 ? langAttr.substring(0, underscoreIndex) : langAttr;
+                }else{
+                    langAttr = 'cn';
+                }
                 // 日期控件选择完成后回调处理
                 var callback = time.attr("data-callback") || {};
                 if (buttons) {
@@ -128,6 +142,7 @@ $(function() {
                     theme: 'molv',
                     trigger: 'click',
                     type: type,
+                    lang: langAttr,
                     format: format,
                     btns: newBtnArr,
                     done: function (value, data) {
@@ -553,17 +568,7 @@ $.ajaxSetup({
 });
 
 
-//初始化i18n插件
-var moduleList = ['webcore_system', 'webcore_common'];
 
-moduleList.forEach(function(moduleName) {
-    $.i18n.properties({
-        path: ROOT + '/i18n/messages/',
-        name: moduleName,
-        language: LANG_COUNTRY,
-        mode: 'map'
-    });
-});
 
 //初始化i18n函数
 function i18n(msgKey, ...args) {

@@ -108,10 +108,50 @@ public class SysLoginService
         passwordService.validate(user, password);
 
         AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
-        setRolePermission(user);
         recordLoginInfo(user.getUserId());
         return user;
     }
+
+    public SysUser loginSMS(String loginName){
+        // 用户名为空 错误
+        if (StrUtils.isEmpty(loginName))
+        {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_FAIL, MessageUtils.message("not.null")));
+            throw new UserNotExistsException();
+        }
+        // 用户名不在指定范围内 错误
+        if (loginName.length() < UserConstants.USERNAME_MIN_LENGTH
+                || loginName.length() > UserConstants.USERNAME_MAX_LENGTH)
+        {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+            throw new UserPasswordNotMatchException();
+        }
+
+        // 查询用户信息
+        SysUser user = userService.selectUserByLoginName(loginName);
+
+        if (user == null)
+        {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.not.exists")));
+            throw new UserNotExistsException();
+        }
+
+        if (UserStatus.DELETED.getCode().equals(user.getDelFlag()))
+        {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.delete")));
+            throw new UserDeleteException();
+        }
+
+        if (UserStatus.DISABLE.getCode().equals(user.getStatus()))
+        {
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRemark())));
+            throw new UserBlockedException();
+        }
+
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        recordLoginInfo(user.getUserId());
+        return user;
+    };
 
     /**
     private boolean maybeEmail(String username)

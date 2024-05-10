@@ -29,6 +29,8 @@ public interface ISysDictDataService
      */
     public String selectDictLabel(String dictType, String dictValue);
 
+    String selectUserDictLabel(String dictType, String dictValue);
+
     /**
      * 根据字典数据ID查询信息
      * 

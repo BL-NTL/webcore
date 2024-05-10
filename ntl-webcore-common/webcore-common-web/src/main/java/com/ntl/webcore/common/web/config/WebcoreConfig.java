@@ -1,7 +1,10 @@
 package com.ntl.webcore.common.web.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 /**
  * 全局配置类
@@ -33,8 +36,12 @@ public class WebcoreConfig
     /** 实例演示开关 */
     private static boolean demoEnabled;
 
-    /** 上传路径 */
-    private static String profile;
+    /** 基础路径 */
+
+    private static String windowsBasePath;
+
+    private static String linuxBasePath;
+
 
     /** 获取地址开关 */
     private static boolean addressEnabled;
@@ -81,12 +88,35 @@ public class WebcoreConfig
 
     public static String getProfile()
     {
-        return profile;
+        return getBasePath() + File.separator + "uploadPath";
     }
 
-    public void setProfile(String profile)
-    {
-        WebcoreConfig.profile = profile;
+    public static String getBasePath() {
+        // 根据操作系统选择路径
+        return isWindows() ? windowsBasePath : linuxBasePath;
+    }
+
+
+    private static boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
+    }
+
+    public static String getWindowsBasePath() {
+        return windowsBasePath;
+    }
+
+    @Value("${app.basePath.windows}")
+    public void setWindowsBasePath(String windowsBasePath) {
+        WebcoreConfig.windowsBasePath = windowsBasePath;
+    }
+
+    public static String getLinuxBasePath() {
+        return linuxBasePath;
+    }
+
+    @Value("${app.basePath.linux}")
+    public void setLinuxBasePath(String linuxBasePath) {
+        WebcoreConfig.linuxBasePath = linuxBasePath;
     }
 
     public static boolean isAddressEnabled()
@@ -120,7 +150,7 @@ public class WebcoreConfig
      */
     public static String getImportPath()
     {
-        return getProfile() + "/import";
+        return getProfile() + File.separator + "import";
     }
 
     /**
@@ -128,7 +158,7 @@ public class WebcoreConfig
      */
     public static String getAvatarPath()
     {
-        return getProfile() + "/avatar";
+        return getProfile() + File.separator + "avatar";
     }
 
     /**
@@ -136,7 +166,7 @@ public class WebcoreConfig
      */
     public static String getDownloadPath()
     {
-        return getProfile() + "/download/";
+        return getProfile() + File.separator + "download" + File.separator;
     }
 
     /**
@@ -144,6 +174,6 @@ public class WebcoreConfig
      */
     public static String getUploadPath()
     {
-        return getProfile() + "/upload";
+        return getProfile() + File.separator +"upload";
     }
 }

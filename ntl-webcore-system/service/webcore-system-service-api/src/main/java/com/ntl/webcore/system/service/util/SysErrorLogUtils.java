@@ -54,7 +54,7 @@ public class SysErrorLogUtils {
         if(StrUtils.isEmpty(errorMessage)){
             errorMessage = msg;
         }else{
-            errorMessage += "/n"+ msg;
+            errorMessage += "\n"+ msg;
         }
         errorLog.setErrorMessage(errorMessage);
 

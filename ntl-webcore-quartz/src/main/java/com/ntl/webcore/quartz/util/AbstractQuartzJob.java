@@ -6,6 +6,7 @@ import com.ntl.webcore.common.lang.constant.Constants;
 import com.ntl.webcore.common.lang.constant.ScheduleConstants;
 import com.ntl.webcore.common.lang.string.StrUtils;
 import com.ntl.webcore.common.web.utils.ExceptionUtil;
+import com.ntl.webcore.common.web.utils.MessageUtils;
 import com.ntl.webcore.common.web.utils.bean.BeanUtils;
 import com.ntl.webcore.common.web.utils.spring.SpringUtils;
 import org.quartz.Job;
@@ -81,12 +82,24 @@ public abstract class AbstractQuartzJob implements Job
         sysJobLog.setStartTime(startTime);
         sysJobLog.setEndTime(new Date());
         long runMs = sysJobLog.getEndTime().getTime() - sysJobLog.getStartTime().getTime();
-        sysJobLog.setJobMessage(sysJobLog.getJobName() + " 总共耗时：" + runMs + "毫秒");
+        String jobMessage = MessageUtils.message("quartz.job.log.message.totalTime") + ":";
+
+        if(runMs < 1000L){
+            jobMessage += runMs + " " + MessageUtils.message("quartz.job.log.message.milliseconds") ;
+        }else if(runMs < 60000L){
+            jobMessage += (runMs / 1000) + " " + MessageUtils.message("quartz.job.log.message.seconds") ;
+        }else{
+            long minutes = (runMs / 1000) / 60;
+            long seconds = (runMs / 1000) % 60;
+            jobMessage +=  minutes + MessageUtils.message("quartz.job.log.message.minutes") ;
+            jobMessage +=  seconds + MessageUtils.message("quartz.job.log.message.seconds") ;
+        }
+        sysJobLog.setJobMessage(jobMessage);
         if (e != null)
         {
             sysJobLog.setStatus(Constants.FAIL);
-            String errorMsg = StrUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);
-            sysJobLog.setExceptionInfo(errorMsg);
+            //String errorMsg = StrUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);
+            sysJobLog.setExceptionInfo(ExceptionUtil.getExceptionMessage(e));
         }
         else
         {

@@ -3,6 +3,7 @@ package com.ntl.webcore.system.service.base;
 import com.ntl.webcore.common.lang.text.Convert;
 import com.ntl.webcore.system.common.model.entity.SysDictData;
 import com.ntl.webcore.system.common.model.util.DictUtils;
+import com.ntl.webcore.system.common.model.util.ShiroUtils;
 import com.ntl.webcore.system.mapper.SysDictDataMapper;
 import com.ntl.webcore.system.service.base.ISysDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,12 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     public String selectDictLabel(String dictType, String dictValue)
     {
         return dictDataMapper.selectDictLabel(dictType, dictValue);
+    }
+
+    @Override
+    public String selectUserDictLabel(String dictType, String dictValue)
+    {
+        return dictDataMapper.selectUserDictLabel(dictType, dictValue, ShiroUtils.getLoginName());
     }
 
     /**

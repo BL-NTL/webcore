@@ -37,6 +37,12 @@ public interface SysDictDataMapper
      */
     public String selectDictLabel(@Param("dictType") String dictType, @Param("dictValue") String dictValue);
 
+    String selectUserDictLabel(@Param("dictType") String dictType,
+                               @Param("dictValue") String dictValue,
+                               @Param("loginName") String loginName
+                               );
+
+
     /**
      * 根据字典数据ID查询信息
      * 

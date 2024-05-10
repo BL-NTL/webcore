@@ -1,5 +1,6 @@
 package com.ntl.webcore.framework.page.util;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ntl.webcore.common.web.utils.sql.SqlUtil;
 import com.ntl.webcore.framework.page.domain.PageDomain;
@@ -23,6 +24,16 @@ public class PageUtils extends PageHelper
         String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
         Boolean reasonable = pageDomain.getReasonable();
         PageHelper.startPage(pageNum, pageSize, orderBy).setReasonable(reasonable);
+    }
+    public static void startPageUncheckSql(){
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
+        Boolean reasonable = pageDomain.getReasonable();
+        Page page = PageHelper.startPage(pageNum, pageSize);
+        page.setUnsafeOrderBy(orderBy);
+        page.setReasonable(reasonable);
     }
 
     /**

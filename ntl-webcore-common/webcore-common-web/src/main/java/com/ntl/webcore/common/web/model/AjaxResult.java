@@ -220,4 +220,16 @@ public class AjaxResult extends HashMap<String, Object>
         super.put(key, value);
         return this;
     }
+
+    public String getMsg(){
+        return this.get(MSG_TAG).toString();
+    }
+
+    public String getCode(){
+        return this.get(CODE_TAG).toString();
+    }
+
+    public Object getData(){
+        return this.get(DATA_TAG);
+    }
 }

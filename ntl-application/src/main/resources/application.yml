@@ -8,13 +8,15 @@ app:
   # 客户平台名称
   platformName: NTL后台管理平台
   # 版本
-  version: 4.8.0
+  version: 4.9.0
   # 版权年份
   copyrightYear: 2022
   # 实例演示开关
   demoEnabled: true
-  # 文件路径 示例（ Windows配置D:/webcore/uploadPath，Linux配置 /home/webcore/uploadPath）
-  profile: D:/NTL-WebAPP/NTL-Webcore/uploadPath
+  # base path
+  basePath:
+    windows: D:/NTL-Webcore
+    linux: /home/webcore
   # 获取ip地址开关
   addressEnabled: false
 
@@ -62,7 +64,12 @@ spring:
     # 国际化资源文件路径
     basename: static/i18n/messages
     encoding: UTF-8
-    localValue: zh-CN
+    # zh-CN, en-US
+    lang: en-US
+    moduleNames:
+      - webcore_common
+      - webcore_system
+
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -134,6 +141,8 @@ shiro:
   rememberMe:
     # 是否开启记住我
     enabled: false
+  swagger:
+    open: true
 
 # 自定义shiro接口权限过滤配置
 shiro-filter:
@@ -154,6 +163,10 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+  title: Swagger Index Page Title
+  description: Swagger description
+  # 多个包扫描路径以逗号分隔
+  basepackage: com.ntl
 
 application:
   job:

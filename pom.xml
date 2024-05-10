@@ -5,7 +5,7 @@
 
     <groupId>com.ntl.webcore</groupId>
     <artifactId>ntl-webcore</artifactId>
-    <version>4.8.0</version>
+    <version>4.9.0</version>
 
     <name>NTL-Webcore</name>
     <description>NTL-Webcore quick backend system</description>

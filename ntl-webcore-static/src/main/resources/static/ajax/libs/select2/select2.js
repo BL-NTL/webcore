@@ -4704,55 +4704,101 @@ S2.define('select2/dropdown/closeOnSelect',[
     });
   };
 
-  return CloseOnSelect;
+  return CloseOnSelect;e
 });
 
 S2.define('select2/i18n/en',[],function () {
   // English
   return {
-    errorLoading: function () {
-      return '无法载入结果。';
-    },
-    inputTooLong: function (args) {
-      var overChars = args.input.length - args.maximum;
+      errorLoading: function () {
+        return 'The results could not be loaded.';
+      },
+      inputTooLong: function (args) {
+        var overChars = args.input.length - args.maximum;
 
-      var message = '请删除' + overChars + '个字符';
+        var message = 'Please delete ' + overChars + ' character';
 
-      if (overChars != 1) {
-        message += 's';
+        if (overChars != 1) {
+          message += 's';
+        }
+
+        return message;
+      },
+      inputTooShort: function (args) {
+        var remainingChars = args.minimum - args.input.length;
+
+        var message = 'Please enter ' + remainingChars + ' or more characters';
+
+        return message;
+      },
+      loadingMore: function () {
+        return 'Loading more results…';
+      },
+      maximumSelected: function (args) {
+        var message = 'You can only select ' + args.maximum + ' item';
+
+        if (args.maximum != 1) {
+          message += 's';
+        }
+
+        return message;
+      },
+      noResults: function () {
+        return 'No results found';
+      },
+      searching: function () {
+        return 'Searching…';
+      },
+      removeAllItems: function () {
+        return 'Remove all items';
+      },
+      removeItem: function () {
+        return 'Remove item';
+      },
+      search: function() {
+        return 'Search';
       }
+    };
+});
 
-      return message;
-    },
-    inputTooShort: function (args) {
-      var remainingChars = args.minimum - args.input.length;
+S2.define('select2/i18n/zh',[],function () {
+  // Chinese (Simplified)
+    return {
+      errorLoading: function () {
+        return '无法载入结果。';
+      },
+      inputTooLong: function (args) {
+        var overChars = args.input.length - args.maximum;
 
-      var message = '请再输入至少' + remainingChars + '个字符';
+        var message = '请删除' + overChars + '个字符';
 
-      return message;
-    },
-    loadingMore: function () {
-      return '载入更多结果…';
-    },
-    maximumSelected: function (args) {
-      var message = '最多只能' + args.maximum + '个选项';
+        return message;
+      },
+      inputTooShort: function (args) {
+        var remainingChars = args.minimum - args.input.length;
 
-      if (args.maximum != 1) {
-        message += 's';
+        var message = '请再输入至少' + remainingChars + '个字符';
+
+        return message;
+      },
+      loadingMore: function () {
+        return '载入更多结果…';
+      },
+      maximumSelected: function (args) {
+        var message = '最多只能选择' + args.maximum + '个项目';
+
+        return message;
+      },
+      noResults: function () {
+        return '未找到结果';
+      },
+      searching: function () {
+        return '搜索中…';
+      },
+      removeAllItems: function () {
+        return '删除所有项目';
       }
-
-      return message;
-    },
-    noResults: function () {
-      return '未找到结果';
-    },
-    searching: function () {
-      return '搜索中…';
-    },
-    removeAllItems: function () {
-      return '删除所有项目';
-    }
-  };
+    };
 });
 
 S2.define('select2/defaults',[
@@ -4994,7 +5040,7 @@ S2.define('select2/defaults',[
     options.language = this._resolveLanguage(options.language);
 
     // Always fall back to English since it will always be complete
-    options.language.push('en');
+    // options.language.push('en');
 
     var uniqueLanguages = [];
 
@@ -5101,6 +5147,9 @@ S2.define('select2/defaults',[
   };
 
   Defaults.prototype.applyFromElement = function (options, $element) {
+    if(options.language){
+       options.language =  options.language.replace("_", "-");
+    }
     var optionLanguage = options.language;
     var defaultLanguage = this.defaults.language;
     var elementLanguage = $element.prop('lang');

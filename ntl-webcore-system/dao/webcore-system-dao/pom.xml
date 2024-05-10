@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ntl-webcore-system</artifactId>
         <groupId>com.ntl.webcore</groupId>
-        <version>4.8.0</version>
+        <version>4.9.0</version>
         <relativePath>../../pom.xml</relativePath>
         <!-- 这里使用相对路径指向父级 pom.xml,因为system-dao是没有直接在webcore-system的根目录下 -->
     </parent>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.ntl.webcore</groupId>
             <artifactId>webcore-system-common-api</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

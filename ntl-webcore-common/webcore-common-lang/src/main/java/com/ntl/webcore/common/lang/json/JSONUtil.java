@@ -2,6 +2,8 @@ package com.ntl.webcore.common.lang.json;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,12 +11,32 @@ import java.util.List;
 
 public class JSONUtil<T> {
 
-    public static<T> void serializeObjectToJsonFile(T object, String filePath) {
+    private static Logger logger = LoggerFactory.getLogger(JSONUtil.class);
+
+    /**
+     * 序列化对象到文件
+     * @param object
+     * @param filePath
+     * @param <T>
+     */
+    public static<T> boolean serializeObjectToJsonFile(T object, String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.writeValue(new File(filePath), object);
+            File file = new File(filePath);
+            File parentDir = file.getParentFile();
+
+            if (!parentDir.exists()) {
+                // 如果目录不存在，则创建目录
+                if (!parentDir.mkdirs()) {
+                    logger.error("无法创建目录");
+                    return false;
+                }
+            }
+            objectMapper.writeValue(file, object);
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("serialize object to json file {} failed.", filePath);
+            return false;
         }
     }
 

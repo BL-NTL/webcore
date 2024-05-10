@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ntl-webcore-system</artifactId>
         <groupId>com.ntl.webcore</groupId>
-        <version>4.8.0</version>
+        <version>4.9.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -22,19 +22,19 @@
         <dependency>
             <groupId>com.ntl.webcore</groupId>
             <artifactId>webcore-system-web-manager</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ntl.webcore</groupId>
             <artifactId>webcore-system-web-ui</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ntl.webcore</groupId>
             <artifactId>webcore-system-service-impl</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -9,15 +9,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 public class CSVUtil<T> {
 
     public static<T> List<T> deserializeCSVFileToListObject(String fileName, Class<T> clazz){
         File file = new File(fileName);
         CsvMapper mapper = new CsvMapper();
+        mapper.setTimeZone(TimeZone.getDefault());
         CsvSchema schema = mapper.typedSchemaFor(clazz).withHeader().withColumnReordering(true);
+
         List<T> list = new ArrayList<>();
         try {
+            // Specify the character encoding (e.g., UTF-8) when reading the CSV file
             MappingIterator<T> it = mapper.readerFor(clazz).with(schema).readValues(file);
             while (it.hasNextValue()) {
                 list.add((T) it.nextValue());

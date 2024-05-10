@@ -11,23 +11,23 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								任务名称：<input type="text" name="jobName"/>
+								[[#{ui.system.monitor.job.label.jobName}]]：<input type="text" name="jobName"/>
 							</li>
 							<li>
-								任务分组：<select name="jobGroup" th:with="type=${@dict.getType('sys_job_group')}">
-									<option value="">所有</option>
+								[[#{ui.system.monitor.job.label.jobGroup}]]：<select name="jobGroup" th:with="type=${@dict.getType('sys_job_group')}">
+									<option value="">[[#{ui.system.monitor.job.select.all}]]</option>
 									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 								</select>
 							</li>
 							<li>
-								任务状态：<select name="status" th:with="type=${@dict.getType('sys_job_status')}">
-									<option value="">所有</option>
+								[[#{ui.system.monitor.job.label.jobStatus}]]：<select name="status" th:with="type=${@dict.getType('sys_job_status')}">
+									<option value="">[[#{ui.system.monitor.job.select.all}]]</option>
 									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 								</select>
 							</li>
 							<li>
-								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;[[#{ui.system.monitor.job.button.search}]]</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;[[#{ui.system.monitor.job.button.refresh}]]</a>
 							</li>
 						</ul>
 					</div>
@@ -36,22 +36,22 @@
 			
 			<div class="btn-group-sm" id="toolbar" role="group">
 				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="monitor:job:add">
-	                <i class="fa fa-plus"></i> 新增
+	                <i class="fa fa-plus"></i> [[#{ui.system.monitor.job.button.add}]]
 	            </a>
 	            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="monitor:job:edit">
-		            <i class="fa fa-edit"></i> 修改
+		            <i class="fa fa-edit"></i> [[#{ui.system.monitor.job.button.edit}]]
 		        </a>
 				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="monitor:job:remove">
-		            <i class="fa fa-remove"></i> 删除
+		            <i class="fa fa-remove"></i> [[#{ui.system.monitor.job.button.remove}]]
 		        </a>
 		         <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="monitor:job:export">
-		            <i class="fa fa-download"></i> 导出
+		            <i class="fa fa-download"></i> [[#{ui.system.monitor.job.button.export}]]
 		        </a>
 		        <a class="btn btn-primary" onclick="javascript:cron()">
-		            <i class="fa fa-code"></i> 生成表达式
+		            <i class="fa fa-code"></i> [[#{ui.system.monitor.job.button.generateExpress}]]
 		        </a>
 		        <a class="btn btn-info" onclick="javascript:jobLog()" shiro:hasPermission="monitor:job:detail">
-		            <i class="fa fa-list"></i> 日志
+		            <i class="fa fa-list"></i> [[#{ui.system.monitor.job.button.log}]]
 		        </a>
 	        </div>
         
@@ -79,39 +79,40 @@
 		        exportUrl: prefix + "/export",
 		        sortName: "createTime",
 		        sortOrder: "desc",
-		        modalName: "任务",
+		        modalName: [[#{ui.system.monitor.job.table.moduleName}]],
+		        locale: [[${@messageService.getLanguageCode()}]],
 		        columns: [{
 		            checkbox: true
 		        },
 		        {
 		            field: 'jobId',
-		            title: '任务编号'
+		            title: [[#{ui.system.monitor.job.table.field.jobId}]]
 		        },
 		        {
 		            field: 'jobName',
-		            title: '任务名称',
+		            title: [[#{ui.system.monitor.job.table.field.jobName}]],
 		        },
 		        {
 		            field: 'jobGroup',
-		            title: '任务分组',
+		            title: [[#{ui.system.monitor.job.table.field.jobGroup}]],
 		            formatter: function(value, row, index) {
 		            	return $.table.selectDictLabel(datas, value);
 		            }
 		        },
 		        {
 		            field: 'invokeTarget',
-		            title: '调用目标字符串',
+		            title: [[#{ui.system.monitor.job.table.field.invokeTarget}]],
 		            formatter: function(value, row, index) {
                     	return $.table.tooltip(value);
                     }
 		        },
 		        {
 		            field: 'cronExpression',
-		            title: '执行表达式'
+		            title: [[#{ui.system.monitor.job.table.field.cronExpression}]]
 		        },
 		        {
 		        	visible: statusFlag == 'hidden' ? false : true,
-		        	title: '任务状态',
+		        	title: [[#{ui.system.monitor.job.table.field.statusFlag}]],
 		        	align: 'center',
 		        	formatter: function (value, row, index) {
 		        		return statusTools(row);
@@ -119,22 +120,22 @@
 		        },
 		        {
 		            field: 'createTime',
-		            title: '创建时间',
+		            title: [[#{ui.system.monitor.job.table.field.createTime}]],
 		            sortable: true
 		        },
 		        {
-		            title: '操作',
+		            title: [[#{ui.system.monitor.job.table.field.option}]],
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		                var actions = [];
-		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.jobId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.jobId + '\')"><i class="fa fa-remove"></i>删除</a> ');
+		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.jobId + '\')"><i class="fa fa-edit"></i> '+[[#{ui.system.monitor.job.table.button.edit}]]+'</a> ');
+		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.jobId + '\')"><i class="fa fa-remove"></i>'+[[#{ui.system.monitor.job.table.button.remove}]]+'</a> ');
 		                var more = [];
-		                more.push("<a class='btn btn-default btn-xs " + statusFlag + "' href='javascript:void(0)' onclick='run(" + row.jobId + ")'><i class='fa fa-play-circle-o'></i> 执行一次</a> ");
-		                more.push("<a class='btn btn-default btn-xs " + detailFlag + "' href='javascript:void(0)' onclick='$.operate.detail(" + row.jobId + ")'><i class='fa fa-search'></i>任务详细</a> ");
-		                more.push("<a class='btn btn-default btn-xs " + detailFlag + "' href='javascript:void(0)' onclick='jobLog(" + row.jobId + ")'><i class='fa fa-list'></i>调度日志</a>");
-		                actions.push('<a class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
-		                return actions.join('');
+		                more.push("<a class='btn btn-default btn-xs " + statusFlag + "' href='javascript:void(0)' onclick='run(" + row.jobId + ")'><i class='fa fa-play-circle-o'></i> "+[[#{ui.system.monitor.job.table.button.options.executeOnce}]]+"</a> ");
+                        more.push("<a class='btn btn-default btn-xs " + detailFlag + "' href='javascript:void(0)' onclick='$.operate.detail(" + row.jobId + ")'><i class='fa fa-search'></i> "+[[#{ui.system.monitor.job.table.button.options.taskDetails}]]+"</a> ");
+                        more.push("<a class='btn btn-default btn-xs " + detailFlag + "' href='javascript:void(0)' onclick='jobLog(" + row.jobId + ")'><i class='fa fa-list'></i> "+[[#{ui.system.monitor.job.table.button.options.scheduleLog}]]+"</a>");
+                        actions.push('<a class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>' +[[#{ui.system.monitor.job.table.button.options}]]+'</a>');
+                        return actions.join('');
 		            }
 		        }]
 		    };
@@ -152,21 +153,21 @@
 		
 		/* 立即执行一次 */
 		function run(jobId) {
-			$.modal.confirm("确认要立即执行一次任务吗？", function() {
+			$.modal.confirm([[#{ui.system.monitor.job.table.button.options.executeOnce.msg}]], function() {
 				$.operate.post(prefix + "/run", { "jobId": jobId});
 		    })
 		}
 
 		/* 调度任务-停用 */
 		function stop(jobId, jobGroup) {
-			$.modal.confirm("确认要停用任务吗？", function() {
+			$.modal.confirm([[#{ui.system.monitor.job.table.field.statusFlag.stop.msg}]], function() {
 				$.operate.post(prefix + "/changeStatus", { "jobId": jobId, "jobGroup": jobGroup, "status": 1 });
 		    })
 		}
 
 		/* 调度任务-启用 */
 		function start(jobId, jobGroup) {
-			$.modal.confirm("确认要启用任务吗？", function() {
+			$.modal.confirm([[#{ui.system.monitor.job.table.field.statusFlag.open.msg}]], function() {
 				$.operate.post(prefix + "/changeStatus", { "jobId": jobId, "jobGroup": jobGroup, "status": 0 });
 		    })
 		}
@@ -177,7 +178,7 @@
 		    if ($.common.isNotEmpty(jobId)) {
 		        url += '?jobId=' + jobId;
 		    }
-		    $.modal.openTab("调度日志", url);
+		    $.modal.openTab([[#{ui.system.monitor.job.table.button.options.scheduleLog.dialog.title}]], url);
 		}
 		
 		/* cron表达式生成 */
@@ -186,7 +187,7 @@
             var height = $(window).height() - 50;
             top.layer.open({
                 maxmin: true,
-                title: "Cron表达式生成器",
+                title: [[#{ui.system.monitor.job.button.generateExpress.dialog.title}]],
                 type: 2,
                 area: ['800px', height + "px" ], //宽高
                 shadeClose: true,

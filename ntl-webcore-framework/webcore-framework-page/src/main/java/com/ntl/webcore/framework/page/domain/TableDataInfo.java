@@ -1,7 +1,9 @@
 package com.ntl.webcore.framework.page.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 表格分页数据对象
@@ -24,11 +26,15 @@ public class TableDataInfo implements Serializable
     /** 消息内容 */
     private String msg;
 
+    /** 其他数据 */
+    private Map<String,Object> data;
+
     /**
      * 表格数据对象
      */
     public TableDataInfo()
     {
+        data = new HashMap<>();
     }
 
     /**
@@ -81,5 +87,13 @@ public class TableDataInfo implements Serializable
     public void setMsg(String msg)
     {
         this.msg = msg;
+    }
+
+    public Map<String, Object> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
     }
 }

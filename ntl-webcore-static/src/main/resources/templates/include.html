@@ -11,13 +11,18 @@
 	<!-- bootstrap-table 表格插件样式 -->
 	<link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css?v=1.18.3}" rel="stylesheet"/>
 	<link th:href="@{/css/animate.min.css?v=20210831}" rel="stylesheet"/>
-	<link th:href="@{/css/style.min.css?v=4.8.0}" rel="stylesheet"/>
-	<link th:href="@{/webcore/css/webcore-ui.css?v=4.8.0}" rel="stylesheet"/>
+	<link th:href="@{/css/style.min.css?v=4.9.0}" rel="stylesheet"/>
+	<link th:href="@{/webcore/css/webcore-ui.css?v=4.9.0}" rel="stylesheet"/>
 </head>
 
 <!-- 通用JS -->
 <div th:fragment="footer">
-    <script th:inline="javascript">
+	<a id="scroll-up" href="#" class="btn btn-sm display"><i class="fa fa-angle-double-up"></i></a>
+	<script th:src="@{/js/jquery.min.js?v=3.6.1}"></script>
+	<script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
+	<!--jQuery国际化插件-->
+	<script th:src="@{/js/jquery.i18n.properties.min.js}"></script>
+	<script th:inline="javascript">
     	var ctx = [[@{/}]];
     	var lockscreen = [[${session.lockscreen}]];
     	if(lockscreen){
@@ -27,12 +32,19 @@
 		var ROOT = [[${#servletContext.contextPath}]];
 		//获取默认语言
 		var LANG_COUNTRY = [[${#locale.language+'_'+#locale.country}]];
+		//初始化i18n插件  legacy method
+
+		var moduleList = [[${@messageService.getModuleNames()}]];
+
+		moduleList.forEach(function(moduleName) {
+			$.i18n.properties({
+				path: ROOT + '/i18n/messages/',
+				name: moduleName,
+				language: LANG_COUNTRY,
+				mode: 'map'
+			});
+		});
 	</script>
-	<a id="scroll-up" href="#" class="btn btn-sm display"><i class="fa fa-angle-double-up"></i></a>
-	<script th:src="@{/js/jquery.min.js?v=3.6.1}"></script>
-	<script th:src="@{/js/bootstrap.min.js?v=3.3.7}"></script>
-	<!--jQuery国际化插件-->
-	<script th:src="@{/js/jquery.i18n.properties.min.js}"></script>
 	<!-- bootstrap-table 表格插件 -->
 	<script th:src="@{/ajax/libs/bootstrap-table/bootstrap-table.min.js?v=1.18.3}"></script>
 	<script th:src="@{/ajax/libs/bootstrap-table/locale/bootstrap-table-zh-CN.min.js?v=1.18.3}"></script>
@@ -49,8 +61,9 @@
 	<script th:src="@{/ajax/libs/layer/layer.min.js?v=3.5.1}"></script>
 	<script th:src="@{/ajax/libs/layui/layui.min.js?v=2.7.5}"></script>
 
-	<script th:src="@{/webcore/js/common.js?v=4.8.0}"></script>
-	<script th:src="@{/webcore/js/webcore-ui.js?v=4.8.0}"></script>
+	<script th:src="@{/webcore/js/common.js?v=4.9.0}"></script>
+	<script th:src="@{/webcore/js/webcore-ui.js?v=4.9.0}"></script>
+
 </div>
 
 
@@ -68,7 +81,7 @@
     <link th:href="@{/ajax/libs/select2/select2-bootstrap.min.css?v=4.0.13}" rel="stylesheet"/>
 </div>
 <div th:fragment="select2-js">
-    <script th:src="@{/ajax/libs/select2/select2.min.js?v=4.0.13}"></script>
+    <script th:src="@{/ajax/libs/select2/select2.js?v=4.0.13}"></script>
 </div>
 
 <!-- bootstrap-select下拉框插件 -->

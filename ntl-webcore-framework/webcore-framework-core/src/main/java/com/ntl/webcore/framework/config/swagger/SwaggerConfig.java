@@ -1,7 +1,7 @@
 package com.ntl.webcore.framework.config.swagger;
 
 import com.ntl.webcore.common.web.config.WebcoreConfig;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +24,15 @@ public class SwaggerConfig
     /** 是否开启swagger */
     @Value("${swagger.enabled}")
     private boolean enabled;
+
+    @Value("${swagger.title}")
+    private String title;
+
+    @Value("${swagger.description}")
+    private String description;
+
+    @Value("${swagger.basepackage}")
+    private String basepackage;
     
     /**
      * 创建API
@@ -39,7 +48,7 @@ public class SwaggerConfig
                 // 设置哪些接口暴露给Swagger展示
                 .select()
                 // 扫描所有有注解的api，用这种方式更灵活
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .apis(RequestHandlerSelectors.withMethodAnnotation(Tag.class))
                 // 扫描指定包中的swagger注解
                 //.apis(RequestHandlerSelectors.basePackage("com.ntl.webcore.project.tool.swagger"))
                 // 扫描所有 .apis(RequestHandlerSelectors.any())
@@ -55,9 +64,9 @@ public class SwaggerConfig
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("Title: NTL-Webcore interface document")
+                .title(title)
                 // 描述
-                .description("Description: demo test")
+                .description(description)
                 // 作者信息
                 .contact(new Contact(WebcoreConfig.getName(), null, null))
                 // 版本

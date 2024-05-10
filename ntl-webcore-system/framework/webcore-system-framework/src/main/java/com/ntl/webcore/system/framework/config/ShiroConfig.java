@@ -137,6 +137,9 @@ public class ShiroConfig
     @Value("${shiro.rememberMe.enabled: false}")
     private boolean rememberMe;
 
+    @Value("${shiro.swagger.open: false}")
+    private boolean openSwagger;
+
 
     /**
      * 缓存管理器 使用Ehcache实现
@@ -285,6 +288,7 @@ public class ShiroConfig
         // Shiro连接约束配置，即过滤链的定义
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 对静态资源设置匿名访问
+        filterChainDefinitionMap.put("/robots.txt**", "anon");
         filterChainDefinitionMap.put("/favicon.ico**", "anon");
         filterChainDefinitionMap.put("/logo.png**", "anon");
         filterChainDefinitionMap.put("/html/**", "anon");
@@ -306,6 +310,14 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/register", "anon,captchaValidate");
         // 系统权限列表
         // filterChainDefinitionMap.putAll(SpringUtils.getBean(IMenuService.class).selectPermsAll());
+
+        // swagger api open
+        if(openSwagger){
+            filterChainDefinitionMap.put("/swagger-ui/index.html", "anon");
+            filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
+            filterChainDefinitionMap.put("/v3/**", "anon");
+            filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        }
 
         //自定义接口权限 开放
         configDiyFilter(filterChainDefinitionMap);
